@@ -1,5 +1,7 @@
 package de.futjikato.stroiz.network;
 
+import de.futjikato.stroiz.StroizLogger;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -25,11 +27,22 @@ public class TcpPacket {
     }
 
     private void parseFrom(DataInputStream inputStream) throws IOException {
-        this.action = parseStr(inputStream);
+        action = parseStr(inputStream);
+
+        int paramCount = inputStream.readInt();
+        parameters = new String[paramCount];
+        for(int i = 0 ; i < paramCount ; i++) {
+            parameters[0] = parseStr(inputStream);
+        }
     }
 
     public void writeTo(DataOutputStream outputStream) throws IOException {
         writeStr(outputStream, action);
+        outputStream.writeInt(parameters.length);
+
+        for(String param : parameters) {
+            writeStr(outputStream, param);
+        }
     }
 
     private String parseStr(DataInputStream inputStream) throws IOException {
@@ -69,9 +82,18 @@ public class TcpPacket {
     }
 
     public String getParameter(int index) throws PacketException {
-        if(this.parameters.length >= index) {
+        if(parameters.length >= index) {
             throw new PacketException("No such parameter.");
         }
-        return this.parameters[index];
+        return parameters[index];
+    }
+
+    public void send() {
+        if(client == null) {
+            StroizLogger.getLogger().severe("Unable to send unbound packet.");
+            return;
+        }
+
+        client.queueWrite(this);
     }
 }

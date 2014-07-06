@@ -1,6 +1,7 @@
 package de.futjikato.stroiz;
 
-import de.futjikato.stroiz.network.TcpServer;
+import de.futjikato.stroiz.server.Server;
+import de.futjikato.stroiz.server.UserManager;
 
 import java.io.IOException;
 
@@ -14,8 +15,10 @@ public class ServerMain {
     public static void main(String[] args) throws IOException {
         int port = Integer.valueOf(args[0]);
 
-        TcpServer server = new TcpServer();
+        UserManager userManager = new UserManager();
+
+        Server server = new Server();
+        server.setUsermanager(userManager);
         server.listen(port);
     }
-
 }

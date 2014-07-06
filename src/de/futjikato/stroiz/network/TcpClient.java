@@ -1,13 +1,17 @@
 package de.futjikato.stroiz.network;
 
+import de.futjikato.stroiz.StroizLogger;
 import de.futjikato.stroiz.task.PacketProcessor;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.logging.Level;
 
 /**
  * Tcp Client
@@ -22,6 +26,8 @@ public class TcpClient extends Thread {
     private static final int MAX_ONGOING_WRITE = 5;
 
     private static final int READ_TIMEOUT = 100;
+
+    private InetAddress address;
 
     private DataOutputStream outputStream;
 
@@ -38,6 +44,7 @@ public class TcpClient extends Thread {
 
         inputStream = new DataInputStream(socket.getInputStream());
         outputStream = new DataOutputStream(socket.getOutputStream());
+        address = socket.getInetAddress();
 
         writeQueue = new ConcurrentLinkedDeque<TcpPacket>();
     }
@@ -54,8 +61,8 @@ public class TcpClient extends Thread {
                 packet.setClient(this);
                 PacketProcessor.getInstance().process(packet);
             } catch (IOException e) {
-                System.err.println("TCP read error.");
-                e.printStackTrace();
+                StroizLogger.getLogger().log(Level.SEVERE, "TCP socket error on read.", e);
+                interrupt();
             }
 
             // write
@@ -66,8 +73,8 @@ public class TcpClient extends Thread {
                     packet.writeTo(outputStream);
                 }
             } catch (IOException e) {
-                System.err.println("TCP write error.");
-                e.printStackTrace();
+                StroizLogger.getLogger().log(Level.SEVERE, "TCP socket error on write.", e);
+                interrupt();
             }
         }
     }
@@ -86,5 +93,9 @@ public class TcpClient extends Thread {
 
     public void setAuthenticated(boolean authenticated) {
         this.authenticated = authenticated;
+    }
+
+    public InetAddress getAddress() {
+        return address;
     }
 }

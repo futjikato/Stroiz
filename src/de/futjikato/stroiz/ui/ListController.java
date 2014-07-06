@@ -1,6 +1,5 @@
 package de.futjikato.stroiz.ui;
 
-import de.futjikato.stroiz.task.PacketProcessor;
 import de.futjikato.stroiz.ui.elements.MemberList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
