@@ -48,17 +48,10 @@ var client = net.connect({
 }, function() {
     console.log('connected');
     var authAction = 'NET_CLIENT_AUTH_REQ';
-    client.write(transform(authAction, ["CLI User"]));
+    client.write(transform(authAction, ['CLI User']));
     console.log('send auth');
 });
 
 client.on('data', function(buffer) {
     console.log('received', buffer.length, 'bytes');
-
-    var actionNameLength = buffer.readInt32BE(0);
-    var actionName = buffer.toString('utf8', 4, 4 + actionNameLength);
-
-    var paramCount = buffer.readInt32BE(4 + actionNameLength);
-
-    console.log('response', actionName, 'with', paramCount, 'parameters');
 });

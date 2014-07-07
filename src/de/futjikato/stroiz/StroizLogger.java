@@ -15,7 +15,7 @@ public class StroizLogger {
 
     private static String filename;
 
-    private static  void init(String name) {
+    public static void init(String name) {
         filename = name;
     }
 
