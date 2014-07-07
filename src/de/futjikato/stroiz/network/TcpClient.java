@@ -82,12 +82,23 @@ public class TcpClient extends Thread {
     private byte[] incompletePacket = new byte[MAX_PACKET_SIZE];
 
     /**
-     * Size of the new
+     * Byte size of the new packet to read.
+     * If a new package can be read this is <code>0</code>
      */
     private int incompletePacketByteSize;
 
+    /**
+     * Index to write the next byte in the <code>incompletePacket</code>
+     * Value between <code>0</code> and the current value of <code>incompletePacketByteSize</code>
+     */
     private int incompletePacketIndex;
 
+    /**
+     * Every TCP socket accepted by the server will be wrapped in a TcpClient class.
+     *
+     * @param socket Client socket to read from and write to
+     * @throws IOException
+     */
     public TcpClient(Socket socket) throws IOException {
         socket.setSoTimeout(READ_TIMEOUT);
 
@@ -98,10 +109,22 @@ public class TcpClient extends Thread {
         writeQueue = new ConcurrentLinkedDeque<TcpPacket>();
     }
 
+    /**
+     * Add a package to the write queue.
+     * If the read timeout raises or a message is read a maximum number of packages is polled from this queue and
+     * written into the client output stream.
+     * The number of written packages is limited by <code>MAX_ONGOING_WRITE</code>
+     *
+     * @param packet package to write to client
+     */
     public void queueWrite(TcpPacket packet) {
         writeQueue.add(packet);
     }
 
+    /**
+     * Client loop.
+     * See class description for more details.
+     */
     public void run() {
         while(!isInterrupted()) {
             // read
