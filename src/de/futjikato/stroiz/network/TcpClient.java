@@ -12,6 +12,8 @@ import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 
 /**
@@ -135,8 +137,11 @@ public class TcpClient extends Thread {
                 packet.setClient(this);
 
                 PacketProcessor.getInstance().process(packet);
-            } catch(SocketTimeoutException e){
+            } catch (SocketTimeoutException e){
                 // skip to write
+            } catch (PacketException e) {
+                StroizLogger.getLogger().log(Level.SEVERE, "Packet read error.", e);
+                interrupt();
             } catch (IOException e) {
                 StroizLogger.getLogger().log(Level.SEVERE, "TCP socket error on read.", e);
                 interrupt();
@@ -163,11 +168,17 @@ public class TcpClient extends Thread {
      * @return Packet bytes without size
      * @throws IOException
      */
-    private byte[] readPacketComplete(DataInputStream inputStream) throws IOException {
+    private byte[] readPacketComplete(DataInputStream inputStream) throws IOException, PacketException {
         // check if this is the beginning of a new package
         if(incompletePacketByteSize == 0) {
             incompletePacketByteSize = inputStream.readInt();
+
+            if(incompletePacketByteSize > MAX_PACKET_SIZE) {
+                throw new PacketException("Incoming message too long.");
+            }
+
             incompletePacketIndex = 0;
+            incompletePacket = new byte[incompletePacketByteSize];
         }
 
         // read until max package size is reached or the packet is complete
@@ -175,14 +186,11 @@ public class TcpClient extends Thread {
             incompletePacket[incompletePacketIndex++] = inputStream.readByte();
         }
 
-        // copy out the data from the max size buffer
-        byte[] packetBuffer = new byte[incompletePacketIndex];
-        System.arraycopy(incompletePacket, 0, packetBuffer, 0, incompletePacketIndex);
 
         // after the message is compete reset the byte size variable
         incompletePacketByteSize = 0;
 
-        return packetBuffer;
+        return incompletePacket;
     }
 
     /**

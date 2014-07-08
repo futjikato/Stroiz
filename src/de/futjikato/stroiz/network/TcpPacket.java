@@ -49,7 +49,7 @@ public class TcpPacket {
         int paramCount = buffer.getInt();
         parameters = new String[paramCount];
         for(int i = 0 ; i < paramCount ; i++) {
-            parameters[0] = parseStr(buffer);
+            parameters[i] = parseStr(buffer);
         }
     }
 
@@ -148,7 +148,7 @@ public class TcpPacket {
     }
 
     public String getParameter(int index) throws PacketException {
-        if(parameters.length >= index) {
+        if(parameters.length <= index) {
             throw new PacketException("No such parameter.");
         }
         return parameters[index];

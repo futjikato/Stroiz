@@ -14,7 +14,7 @@ public class ServerMain {
 
     public static void main(String[] args) throws IOException {
         // init logger
-        StroizLogger.init("server");
+        StroizLogger.init("server.log");
 
         int port = Integer.valueOf(args[0]);
 

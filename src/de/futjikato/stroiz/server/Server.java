@@ -2,8 +2,8 @@ package de.futjikato.stroiz.server;
 
 import de.futjikato.stroiz.network.TcpClient;
 import de.futjikato.stroiz.network.TcpServer;
-import de.futjikato.stroiz.server.tasks.ClientAuthTask;
-import de.futjikato.stroiz.server.tasks.ListTask;
+import de.futjikato.stroiz.task.tasks.ClientAuthTask;
+import de.futjikato.stroiz.task.tasks.ListTask;
 import de.futjikato.stroiz.task.PacketProcessor;
 
 public class Server extends TcpServer {

@@ -1,10 +1,6 @@
 package de.futjikato.stroiz.network;
 
 import de.futjikato.stroiz.StroizLogger;
-import de.futjikato.stroiz.server.tasks.ClientAuthTask;
-import de.futjikato.stroiz.server.UserManager;
-import de.futjikato.stroiz.server.tasks.ListTask;
-import de.futjikato.stroiz.task.PacketProcessor;
 
 import java.io.IOException;
 import java.net.ServerSocket;

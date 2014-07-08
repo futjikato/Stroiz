@@ -5,12 +5,11 @@
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.futjikato.stroiz.ui.ListController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.futjikato.stroiz.ui.ListController">
    <children>
-      <HBox layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="200.0">
+      <HBox layoutX="10.0" layoutY="10.0" prefHeight="379.0" prefWidth="578.0">
          <children>
-            <VBox prefHeight="353.0" prefWidth="182.0">
+            <VBox prefHeight="379.0" prefWidth="173.0">
                <children>
                   <Label text="Host">
                      <VBox.margin>
@@ -32,14 +31,30 @@
                         <Insets right="10.0" />
                      </VBox.margin>
                   </TextField>
-                  <Button fx:id="btnConnect" mnemonicParsing="false" onAction="#onConnect" text="Connect">
+                  <Label text="Username">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>
+                  </Label>
+                  <TextField fx:id="fieldUsername">
+                     <VBox.margin>
+                        <Insets right="10.0" />
+                     </VBox.margin></TextField>
+                  <Button fx:id="btnConnect" mnemonicParsing="false" onAction="#onConnect" prefHeight="25.0" prefWidth="Infinity" text="Connect">
+                     <VBox.margin>
+                        <Insets right="10.0" top="10.0" />
+                     </VBox.margin>
                   </Button>
+                  <AnchorPane prefHeight="77.0" prefWidth="173.0">
+                     <children>
+                        <Label fx:id="serverHeadline" text="Connected to:" visible="false" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="10.0" />
+                        <Label fx:id="serverLabel" prefHeight="15.0" prefWidth="21.0" visible="false" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="40.0" />
+                        <Label fx:id="serverErrorLabel" textFill="RED" visible="false" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="10.0" />
+                     </children>
+                  </AnchorPane>
                </children>
             </VBox>
-            <TreeView fx:id="clientTree" prefHeight="353.0" prefWidth="233.0" />
+            <TreeView fx:id="clientTree" nodeOrientation="LEFT_TO_RIGHT" prefHeight="379.0" prefWidth="407.0" />
          </children>
       </HBox>
    </children>

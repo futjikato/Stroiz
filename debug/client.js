@@ -14,32 +14,46 @@ function transform(action, parameterAry) {
     /**
      * Helper function to write a string in the format <int:strlen><utf8:str>
      */
-    function writeStr(buffer, str) {
+    function writeStr(buffer, offset, str) {
         var lengthByteSize = Buffer.byteLength(str);
 
         var lengthBuffer = new Buffer(4);
-        lengthBuffer.writeInt32BE(lengthByteSize, 0);
+        buffer.writeInt32BE(lengthByteSize, offset);
 
-        var strBuffer = new Buffer(lengthByteSize);
-        strBuffer.write(str, 0, lengthByteSize, 'utf8');
+        buffer.write(str, offset + 4, lengthByteSize, 'utf8');
 
-        return Buffer.concat([buffer, lengthBuffer, strBuffer]);
+        return offset + 4 + lengthByteSize;
     }
 
-    var sendBuffer = writeStr(new Buffer(0), action);
-
-    var paramCount = parameterAry.length;
-
-    var paramCountBuffer = new Buffer(4);
-    paramCountBuffer.writeInt32BE(paramCount, 0);
-
-    sendBuffer = Buffer.concat([sendBuffer, paramCountBuffer]);
-
+    // calculate message size in bytes
+    var paramLength = 0;
     parameterAry.forEach(function(str) {
-        sendBuffer = writeStr(sendBuffer, str);
+        paramLength += 4 + Buffer.byteLength(str)
+    });
+    var messageSize = 8 + Buffer.byteLength(action) + 4 + paramLength;
+
+    // create buffer
+    var buffer = new Buffer(messageSize),
+        offset = 0;
+
+    // write message size
+    buffer.writeInt32BE(messageSize, offset);
+    offset += 4;
+
+    // write action name
+    offset = writeStr(buffer, offset, action);
+
+    // write param count
+    var paramCount = parameterAry.length;
+    buffer.writeInt32BE(paramCount, offset);
+    offset += 4;
+
+    // write params
+    parameterAry.forEach(function(str) {
+        offset = writeStr(buffer, offset, str);
     });
 
-    return sendBuffer;
+    return buffer;
 }
 
 var client = net.connect({
@@ -48,7 +62,7 @@ var client = net.connect({
 }, function() {
     console.log('connected');
     var authAction = 'NET_CLIENT_AUTH_REQ';
-    client.write(transform(authAction, ['CLI User']));
+    client.write(transform(authAction, ['CLI User', 'second', 'third']));
     console.log('send auth');
 });
 
