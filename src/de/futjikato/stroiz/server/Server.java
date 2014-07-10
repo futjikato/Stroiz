@@ -8,13 +8,13 @@ import de.futjikato.stroiz.task.PacketProcessor;
 
 public class Server extends TcpServer {
 
-    private UserManager usermanager;
+    private ServerUserManager usermanager;
 
     private ClientAuthTask authTask;
 
     private ListTask listTask;
 
-    public void setUsermanager(UserManager usermanager) {
+    public void setUsermanager(ServerUserManager usermanager) {
         this.usermanager = usermanager;
     }
 
@@ -22,6 +22,8 @@ public class Server extends TcpServer {
     protected void newClient(TcpClient client) {
         usermanager.register(client);
     }
+
+
 
     @Override
     protected void preListen() {

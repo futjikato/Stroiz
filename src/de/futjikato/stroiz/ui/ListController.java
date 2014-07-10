@@ -40,6 +40,9 @@ public class ListController implements Initializable {
     @FXML
     public Label serverErrorLabel;
 
+    @FXML
+    public ComboBox mixerSelect;
+
     private ServerClient selfClient;
 
     @Override
@@ -82,5 +85,15 @@ public class ListController implements Initializable {
 
     public TreeItem<String> getMemberListRoot() {
         return rootClientTreeItem;
+    }
+
+    public void onMixerSelect(ActionEvent actionEvent) {
+        final String mixerName = (String) mixerSelect.getSelectionModel().getSelectedItem();
+        Invoker.getInstance().invoke(new UiTask() {
+            @Override
+            public void run() {
+                application.getRecorder().setMixerByName(mixerName);
+            }
+        });
     }
 }

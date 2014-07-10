@@ -52,6 +52,11 @@
                         <Label fx:id="serverErrorLabel" textFill="RED" visible="false" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="10.0" />
                      </children>
                   </AnchorPane>
+                  <Label text="Audio Source" />
+                  <ComboBox fx:id="mixerSelect" onAction="#onMixerSelect" prefWidth="Infinity" promptText="Select one">
+                     <VBox.margin>
+                        <Insets right="10.0" />
+                     </VBox.margin></ComboBox>
                </children>
             </VBox>
             <TreeView fx:id="clientTree" nodeOrientation="LEFT_TO_RIGHT" prefHeight="379.0" prefWidth="407.0" />

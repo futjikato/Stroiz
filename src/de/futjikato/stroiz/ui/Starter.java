@@ -1,5 +1,8 @@
 package de.futjikato.stroiz.ui;
 
+import de.futjikato.stroiz.audio.Recorder;
+import de.futjikato.stroiz.client.ClientUserManager;
+import de.futjikato.stroiz.client.RemoteClient;
 import de.futjikato.stroiz.task.tasks.ClientAuthTask;
 import de.futjikato.stroiz.task.PacketProcessor;
 import de.futjikato.stroiz.task.tasks.ListTask;
@@ -7,11 +10,16 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TreeItem;
 import javafx.stage.Stage;
 
 public class Starter extends Application {
 
     private ListController listController;
+
+    private static ClientUserManager clientUserManager;
+
+    private Recorder recorder;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -24,16 +32,34 @@ public class Starter extends Application {
         primaryStage.setResizable(false);
 
         Invoker.getInstance().setApplication(this);
+
+        recorder = new Recorder();
+        recorder.publishMixer();
     }
 
     public static void doLaunch() {
+        clientUserManager = new ClientUserManager();
+
         PacketProcessor.getInstance().addObserver(new ClientAuthTask());
-        PacketProcessor.getInstance().addObserver(new ListTask());
+        PacketProcessor.getInstance().addObserver(new ListTask(clientUserManager));
 
         launch();
     }
 
     public ListController getController() {
         return listController;
+    }
+
+    public void updateUsers() {
+        TreeItem<String> root = listController.getMemberListRoot();
+        root.getChildren().clear();
+
+        for(RemoteClient client : clientUserManager.getUsers()) {
+            root.getChildren().add(new TreeItem<String>(client.getListName()));
+        }
+    }
+
+    protected Recorder getRecorder() {
+        return recorder;
     }
 }
