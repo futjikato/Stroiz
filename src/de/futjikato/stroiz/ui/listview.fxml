@@ -67,7 +67,7 @@
                         <Insets right="10.0" />
                      </VBox.margin>
                   </ComboBox>
-                  <Button fx:id="audioTestBtn" mnemonicParsing="false" onAction="#onAudioTest" text="Test">
+                  <Button fx:id="audioTestBtn" disable="true" mnemonicParsing="false" onAction="#onAudioTest" text="Echotest">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>

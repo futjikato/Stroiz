@@ -1,9 +1,8 @@
 package de.futjikato.stroiz.ui;
 
 import de.futjikato.stroiz.StroizLogger;
-import de.futjikato.stroiz.audio.Recorder;
+import de.futjikato.stroiz.audio.Manager;
 import de.futjikato.stroiz.client.ServerClient;
-import de.futjikato.stroiz.ui.elements.MemberList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -46,6 +45,8 @@ public class ListController implements Initializable {
 
     @FXML
     public ComboBox mixerOutSelect;
+
+    private boolean isAudioTesting = false;
 
     @FXML
     public Button audioTestBtn;
@@ -97,22 +98,43 @@ public class ListController implements Initializable {
     }
 
     public void onMixerInSelect(ActionEvent actionEvent) {
+        Manager manager = application.getManager();
         String mixerName = (String) mixerInSelect.getSelectionModel().getSelectedItem();
-        application.getRecorder().setInMixerByName(mixerName);
+        manager.setInMixerByName(mixerName);
+
+        if(manager.isReady()) {
+            audioTestBtn.setDisable(false);
+        } else {
+            audioTestBtn.setDisable(true);
+        }
     }
 
     public void onMixerOutSelect(ActionEvent actionEvent) {
+        Manager manager = application.getManager();
         String mixerName = (String) mixerOutSelect.getSelectionModel().getSelectedItem();
-        application.getRecorder().setOutMixerByName(mixerName);
+        manager.setOutMixerByName(mixerName);
+
+        if(manager.isReady()) {
+            audioTestBtn.setDisable(false);
+        } else {
+            audioTestBtn.setDisable(true);
+        }
     }
 
     public void onAudioTest(ActionEvent actionEvent) {
-        Recorder r = application.getRecorder();
-        if(r.isReady()) {
-            r.echo();
+        Manager manager = application.getManager();
+        if(isAudioTesting) {
+
         } else {
-            StroizLogger.getLogger().warning("Recorder not ready.");
+            if(manager.isReady()) {
+                manager.echoStart();
+                isAudioTesting = true;
+            } else {
+                StroizLogger.getLogger().warning("Manager not ready.");
+            }
         }
+
+
     }
 
     public void setApplication(Starter application) {

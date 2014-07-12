@@ -1,6 +1,6 @@
 package de.futjikato.stroiz.ui;
 
-import de.futjikato.stroiz.audio.Recorder;
+import de.futjikato.stroiz.audio.Manager;
 import de.futjikato.stroiz.client.ClientUserManager;
 import de.futjikato.stroiz.client.RemoteClient;
 import de.futjikato.stroiz.task.tasks.ClientAuthTask;
@@ -19,7 +19,7 @@ public class Starter extends Application {
 
     private static ClientUserManager clientUserManager;
 
-    private Recorder recorder;
+    private Manager recorder;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -34,7 +34,7 @@ public class Starter extends Application {
 
         Invoker.getInstance().setApplication(this);
 
-        recorder = new Recorder();
+        recorder = new Manager();
         recorder.publishMixer();
     }
 
@@ -60,7 +60,7 @@ public class Starter extends Application {
         }
     }
 
-    protected Recorder getRecorder() {
+    protected Manager getManager() {
         return recorder;
     }
 }

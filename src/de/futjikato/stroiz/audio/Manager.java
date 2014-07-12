@@ -8,7 +8,7 @@ import javafx.scene.control.ComboBox;
 import javax.sound.sampled.*;
 import java.util.logging.Level;
 
-public class Recorder {
+public class Manager {
 
     private Mixer currentInMixer;
 
@@ -116,15 +116,22 @@ public class Recorder {
         );
     }
 
-    public void echo() {
-        if(echoThread == null) {
-            System.out.println("start echo");
-            echoThread = new Echo(currentTargetLine, currentSourceLine);
-            echoThread.start();
-        } else {
-            System.out.println("stop echo");
-            echoThread.interrupt();
-            echoThread = null;
+    public boolean echoStart() {
+        if(echoThread != null && echoThread.isAlive()) {
+            return false;
         }
+
+        echoThread = new Echo(currentTargetLine, currentSourceLine);
+        echoThread.start();
+        return true;
+    }
+
+    public boolean echoStop() {
+        if(echoThread == null || !echoThread.isAlive() || echoThread.isInterrupted()) {
+            return false;
+        }
+
+        echoThread.interrupt();
+        return true;
     }
 }

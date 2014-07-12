@@ -24,7 +24,6 @@ public class Echo extends Thread {
         while(!isInterrupted()) {
 
             targetLine.read(buff, 0, 256);
-            System.out.println(String.format("read : %s", Arrays.toString(buff)));
             sourceLine.write(buff, 0, 256);
 
         }
