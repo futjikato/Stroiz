@@ -1,6 +1,7 @@
 package de.futjikato.stroiz.ui;
 
 import de.futjikato.stroiz.StroizLogger;
+import de.futjikato.stroiz.audio.Recorder;
 import de.futjikato.stroiz.client.ServerClient;
 import de.futjikato.stroiz.ui.elements.MemberList;
 import javafx.event.ActionEvent;
@@ -41,9 +42,17 @@ public class ListController implements Initializable {
     public Label serverErrorLabel;
 
     @FXML
-    public ComboBox mixerSelect;
+    public ComboBox mixerInSelect;
+
+    @FXML
+    public ComboBox mixerOutSelect;
+
+    @FXML
+    public Button audioTestBtn;
 
     private ServerClient selfClient;
+
+    private Starter application;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -87,13 +96,26 @@ public class ListController implements Initializable {
         return rootClientTreeItem;
     }
 
-    public void onMixerSelect(ActionEvent actionEvent) {
-        final String mixerName = (String) mixerSelect.getSelectionModel().getSelectedItem();
-        Invoker.getInstance().invoke(new UiTask() {
-            @Override
-            public void run() {
-                application.getRecorder().setMixerByName(mixerName);
-            }
-        });
+    public void onMixerInSelect(ActionEvent actionEvent) {
+        String mixerName = (String) mixerInSelect.getSelectionModel().getSelectedItem();
+        application.getRecorder().setInMixerByName(mixerName);
+    }
+
+    public void onMixerOutSelect(ActionEvent actionEvent) {
+        String mixerName = (String) mixerOutSelect.getSelectionModel().getSelectedItem();
+        application.getRecorder().setOutMixerByName(mixerName);
+    }
+
+    public void onAudioTest(ActionEvent actionEvent) {
+        Recorder r = application.getRecorder();
+        if(r.isReady()) {
+            r.echo();
+        } else {
+            StroizLogger.getLogger().warning("Recorder not ready.");
+        }
+    }
+
+    public void setApplication(Starter application) {
+        this.application = application;
     }
 }

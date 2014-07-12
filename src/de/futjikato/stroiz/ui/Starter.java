@@ -26,6 +26,7 @@ public class Starter extends Application {
         FXMLLoader loader = new FXMLLoader();
         Parent root = loader.load(getClass().getResource("listview.fxml").openStream());
         listController = loader.getController();
+        listController.setApplication(this);
         primaryStage.setTitle("Stroiz");
         primaryStage.setScene(new Scene(root, root.minWidth(1), root.minHeight(1)));
         primaryStage.show();

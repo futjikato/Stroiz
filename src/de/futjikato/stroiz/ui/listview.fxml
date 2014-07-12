@@ -53,10 +53,25 @@
                      </children>
                   </AnchorPane>
                   <Label text="Audio Source" />
-                  <ComboBox fx:id="mixerSelect" onAction="#onMixerSelect" prefWidth="Infinity" promptText="Select one">
+                  <ComboBox fx:id="mixerInSelect" onAction="#onMixerInSelect" prefWidth="Infinity" promptText="Select one">
                      <VBox.margin>
                         <Insets right="10.0" />
                      </VBox.margin></ComboBox>
+                  <Label text="Audio Output">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <ComboBox fx:id="mixerOutSelect" onAction="#onMixerOutSelect" prefWidth="Infinity" promptText="Select one">
+                     <VBox.margin>
+                        <Insets right="10.0" />
+                     </VBox.margin>
+                  </ComboBox>
+                  <Button fx:id="audioTestBtn" mnemonicParsing="false" onAction="#onAudioTest" text="Test">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Button>
                </children>
             </VBox>
             <TreeView fx:id="clientTree" nodeOrientation="LEFT_TO_RIGHT" prefHeight="379.0" prefWidth="407.0" />
