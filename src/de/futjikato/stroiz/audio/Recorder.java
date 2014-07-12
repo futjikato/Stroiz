@@ -29,8 +29,17 @@ public class Recorder {
                 ComboBox outSelect = application.getController().mixerOutSelect;
 
                 for(Mixer.Info info : mixerInfos) {
-                    inSelect.getItems().add(info.getName());
-                    outSelect.getItems().add(info.getName());
+                    AudioFormat format = getAudioFormat();
+                    DataLine.Info targetDataLineInfo = new DataLine.Info(TargetDataLine.class, format);
+                    DataLine.Info sourceDataLineInfo = new DataLine.Info(SourceDataLine.class, format);
+
+                    Mixer mixer = AudioSystem.getMixer(info);
+                    if(mixer.isLineSupported(targetDataLineInfo)) {
+                        inSelect.getItems().add(info.getName());
+                    }
+                    if(mixer.isLineSupported(sourceDataLineInfo)) {
+                        outSelect.getItems().add(info.getName());
+                    }
                 }
             }
         });
