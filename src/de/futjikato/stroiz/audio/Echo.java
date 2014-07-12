@@ -17,6 +17,10 @@ public class Echo extends Thread {
 
     public void run() {
         byte[] buff = new byte[256];
+
+        targetLine.start();
+        sourceLine.start();
+
         while(!isInterrupted()) {
 
             targetLine.read(buff, 0, 256);
@@ -24,5 +28,8 @@ public class Echo extends Thread {
             sourceLine.write(buff, 0, 256);
 
         }
+
+        targetLine.stop();
+        sourceLine.stop();
     }
 }
