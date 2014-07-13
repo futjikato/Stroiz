@@ -1,0 +1,7 @@
+.statusBar {
+    -fx-background-color: #e2e2e2;
+}
+
+.error {
+    -fx-border-color: #ff0000;
+}

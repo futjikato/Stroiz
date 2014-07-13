@@ -73,6 +73,11 @@ public class TcpClient extends Thread {
     private String username;
 
     /**
+     * UDP port the clients wants to receive all voice data on.
+     */
+    private int udpPort;
+
+    /**
      * Flag if the clint was successfully authenticated.
      */
     private boolean authenticated;
@@ -88,7 +93,6 @@ public class TcpClient extends Thread {
      * If a new package can be read this is <code>0</code>
      */
     private int incompletePacketByteSize;
-
     /**
      * Index to write the next byte in the <code>incompletePacket</code>
      * Value between <code>0</code> and the current value of <code>incompletePacketByteSize</code>
@@ -213,6 +217,24 @@ public class TcpClient extends Thread {
     }
 
     /**
+     * Get the UDP port for voice transmission.
+     *
+     * @return UDP port
+     */
+    public int getUdpPort() {
+        return udpPort;
+    }
+
+    /**
+     * Set the UDP port for voice transmission
+     *
+     * @param udpPort UDP port
+     */
+    public void setUdpPort(int udpPort) {
+        this.udpPort = udpPort;
+    }
+
+    /**
      * Check if the client has already authenticated.
      *
      * @return flag
@@ -240,4 +262,6 @@ public class TcpClient extends Thread {
     public InetAddress getAddress() {
         return address;
     }
+
+
 }

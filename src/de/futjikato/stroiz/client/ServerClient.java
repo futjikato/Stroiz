@@ -12,11 +12,11 @@ public class ServerClient extends TcpClient {
         super(new Socket(host, port));
     }
 
-    public void queryAuth(String username) {
+    public void queryAuth(String username, int udpReceivePort) {
         TcpPacket request = new TcpPacket();
         request.setClient(this);
         request.setAction("NET_CLIENT_AUTH_REQ");
-        request.setParameters(new String[]{username});
+        request.setParameters(new String[]{username, String.valueOf(udpReceivePort)});
 
         queueWrite(request);
     }

@@ -7,7 +7,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ClientUserManager implements UserManager<RemoteClient> {
 
-    protected CopyOnWriteArrayList<RemoteClient> remoteClients;
+    protected CopyOnWriteArrayList<RemoteClient> remoteClients = new CopyOnWriteArrayList<RemoteClient>();
 
     @Override
     public List<RemoteClient> getUsers() {

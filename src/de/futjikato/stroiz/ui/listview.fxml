@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.layout.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.futjikato.stroiz.ui.ListController">
+<?import de.futjikato.stroiz.ui.elements.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="450.0" minWidth="600.0" prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.futjikato.stroiz.ui.ListController">
    <children>
-      <HBox layoutX="10.0" layoutY="10.0" prefHeight="379.0" prefWidth="578.0">
+      <HBox layoutX="10.0" layoutY="10.0" prefHeight="410.0" prefWidth="580.0">
          <children>
             <VBox prefHeight="379.0" prefWidth="173.0">
                <children>
@@ -16,30 +19,47 @@
                         <Insets />
                      </VBox.margin>
                   </Label>
-                  <TextField fx:id="fieldHost">
+                  <HostField fx:id="fieldHost">
                      <VBox.margin>
                         <Insets right="10.0" />
                      </VBox.margin>
-                  </TextField>
+                  </HostField>
                   <Label text="Port">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>
                   </Label>
-                  <TextField fx:id="fieldPort">
+                  <PortField fx:id="fieldPort" text="8078" socketType="2" networkInterfaceType="1">
                      <VBox.margin>
                         <Insets right="10.0" />
                      </VBox.margin>
-                  </TextField>
+                  </PortField>
                   <Label text="Username">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>
                   </Label>
-                  <TextField fx:id="fieldUsername">
+                  <UsernameField fx:id="fieldUsername">
                      <VBox.margin>
                         <Insets right="10.0" />
-                     </VBox.margin></TextField>
+                     </VBox.margin></UsernameField>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <Label text="UDP Port" />
+                        <Label layoutX="65.0" layoutY="4.0" text="Needs to be accessable">
+                           <font>
+                              <Font size="8.0" />
+                           </font></Label>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </AnchorPane>
+                  <PortField fx:id="udpPortField" networkInterfaceType="2" socketType="1" text="10087">
+                     <VBox.margin>
+                        <Insets right="10.0" />
+                     </VBox.margin>
+                  </PortField>
                   <Button fx:id="btnConnect" mnemonicParsing="false" onAction="#onConnect" prefHeight="25.0" prefWidth="Infinity" text="Connect">
                      <VBox.margin>
                         <Insets right="10.0" top="10.0" />
@@ -77,5 +97,13 @@
             <TreeView fx:id="clientTree" nodeOrientation="LEFT_TO_RIGHT" prefHeight="379.0" prefWidth="407.0" />
          </children>
       </HBox>
+      <AnchorPane layoutX="4.0" layoutY="420.0" prefHeight="20" prefWidth="580">
+         <children>
+            <Label fx:id="statusBarLabel" layoutX="4.0" layoutY="1.0" prefHeight="20" prefWidth="580" styleClass="statusBar">
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding></Label>
+         </children>
+      </AnchorPane>
    </children>
 </Pane>

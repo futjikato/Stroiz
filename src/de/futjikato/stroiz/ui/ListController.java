@@ -3,6 +3,7 @@ package de.futjikato.stroiz.ui;
 import de.futjikato.stroiz.StroizLogger;
 import de.futjikato.stroiz.audio.Manager;
 import de.futjikato.stroiz.client.ServerClient;
+import de.futjikato.stroiz.ui.elements.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,14 +15,15 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 
 public class ListController implements Initializable {
-    @FXML
-    public TextField fieldHost;
 
     @FXML
-    public TextField fieldPort;
+    public HostField fieldHost;
 
     @FXML
-    public TextField fieldUsername;
+    public PortField fieldPort;
+
+    @FXML
+    public UsernameField fieldUsername;
 
     @FXML
     public Button btnConnect;
@@ -51,6 +53,12 @@ public class ListController implements Initializable {
     @FXML
     public Button audioTestBtn;
 
+    @FXML
+    public Label statusBarLabel;
+
+    @FXML
+    public PortField udpPortField;
+
     private ServerClient selfClient;
 
     private Starter application;
@@ -63,17 +71,25 @@ public class ListController implements Initializable {
 
     @FXML
     public void onConnect(ActionEvent actionEvent) {
-        String host = fieldHost.getText();
-        int port = Integer.valueOf(fieldPort.getText());
 
-        try {
-            selfClient = new ServerClient(host, port);
-            selfClient.start();
+        boolean err = !fieldUsername.validate();
+        err = err|!fieldHost.validate();
+        err = err|!fieldPort.validate();
+        err = err|!udpPortField.validate();
 
-            selfClient.queryAuth(fieldUsername.getText());
-        } catch (IOException e) {
-            StroizLogger.getLogger().log(Level.WARNING, "Connection error", e);
-            authError("Unable to connect to server.");
+        // connect if validation passed
+        if(!err) {
+            try {
+                selfClient = new ServerClient(fieldHost.getText(), fieldPort.getInt());
+                selfClient.start();
+
+                selfClient.queryAuth(fieldUsername.getText(), udpPortField.getInt());
+            } catch (IOException e) {
+                StroizLogger.getLogger().log(Level.WARNING, "Connection error", e);
+                authError("Unable to connect to server.");
+            } catch (ValidationException e) {
+                authError("Validation failed.");
+            }
         }
     }
 
@@ -124,7 +140,8 @@ public class ListController implements Initializable {
     public void onAudioTest(ActionEvent actionEvent) {
         Manager manager = application.getManager();
         if(isAudioTesting) {
-
+            manager.echoStop();
+            isAudioTesting = false;
         } else {
             if(manager.isReady()) {
                 manager.echoStart();

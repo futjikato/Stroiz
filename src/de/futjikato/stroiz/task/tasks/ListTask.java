@@ -46,14 +46,16 @@ public class ListTask extends PacketHandler<ListTask> {
                 StroizLogger.getLogger().info("Received member list");
                 for(String ip : params) {
                     RemoteClient client = new RemoteClient(ip);
+                    StroizLogger.getLogger().info("Received member.");
                     packetHandler.userManager.register(client);
-                    Invoker.getInstance().invoke(new UiTask() {
-                        @Override
-                        public void run() {
-                            application.updateUsers();
-                        }
-                    });
                 }
+
+                Invoker.getInstance().invoke(new UiTask() {
+                    @Override
+                    public void run() {
+                        application.updateUsers();
+                    }
+                });
             }
         }
     }

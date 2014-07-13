@@ -1,6 +1,7 @@
 package de.futjikato.stroiz.audio;
 
 import de.futjikato.stroiz.StroizLogger;
+import de.futjikato.stroiz.network.UdpSender;
 import de.futjikato.stroiz.ui.Invoker;
 import de.futjikato.stroiz.ui.UiTask;
 import javafx.scene.control.ComboBox;
@@ -131,6 +132,7 @@ public class Manager {
             return false;
         }
 
+        echoThread.stopLines();
         echoThread.interrupt();
         return true;
     }

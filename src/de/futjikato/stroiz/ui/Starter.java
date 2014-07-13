@@ -27,8 +27,12 @@ public class Starter extends Application {
         Parent root = loader.load(getClass().getResource("listview.fxml").openStream());
         listController = loader.getController();
         listController.setApplication(this);
+
+        Scene scene = new Scene(root, root.minWidth(1), root.minHeight(1));
+        scene.getStylesheets().add(Starter.class.getResource("listview.css").toExternalForm());
+
         primaryStage.setTitle("Stroiz");
-        primaryStage.setScene(new Scene(root, root.minWidth(1), root.minHeight(1)));
+        primaryStage.setScene(scene);
         primaryStage.show();
         primaryStage.setResizable(false);
 

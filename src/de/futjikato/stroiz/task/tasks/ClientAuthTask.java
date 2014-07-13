@@ -49,11 +49,14 @@ public class ClientAuthTask extends PacketHandler<ClientAuthTask> {
             public void process(ClientAuthTask packetHandler, TcpPacket request) {
                 try {
                     String username = request.getParameter(0);
+                    int udpReceivePort = Integer.valueOf(request.getParameter(1));
+
                     TcpClient client = request.getClient();
 
                     // todo make real auth with key exchange and stuff
 
                     client.setUsername(username);
+                    client.setUdpPort(udpReceivePort);
                     client.setAuthenticated(true);
 
                     TcpPacket response = packetHandler.createPacket(request.getClient(), "NET_CLIENT_AUTH_OK", "Unable to fetch username");
