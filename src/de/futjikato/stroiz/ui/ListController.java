@@ -178,6 +178,7 @@ public class ListController implements Initializable {
         Manager manager = application.getManager();
         Microphone mic = manager.getMicrophone();
         mic.addReceivers(userManager.getUsers());
+        mic.start();
 
         try {
             UdpReceiver receiver = new UdpReceiver(udpPortField.getInt(), 128);

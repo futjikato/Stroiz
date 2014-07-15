@@ -62,8 +62,12 @@ var client = net.connect({
 }, function() {
     console.log('connected');
     var authAction = 'NET_CLIENT_AUTH_REQ';
-    client.write(transform(authAction, ['CLI User', 'second', 'third']));
+    client.write(transform(authAction, ['CLI User', '10080']));
     console.log('send auth');
+});
+
+client.on('error', function(buffer) {
+    console.log(buffer.toString());
 });
 
 client.on('data', function(buffer) {
