@@ -67,4 +67,8 @@ public class Starter extends Application {
     protected Manager getManager() {
         return recorder;
     }
+
+    public ClientUserManager getClientUserManager() {
+        return Starter.clientUserManager;
+    }
 }

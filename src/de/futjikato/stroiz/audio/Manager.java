@@ -1,6 +1,7 @@
 package de.futjikato.stroiz.audio;
 
 import de.futjikato.stroiz.StroizLogger;
+import de.futjikato.stroiz.network.UdpReceiver;
 import de.futjikato.stroiz.network.UdpSender;
 import de.futjikato.stroiz.ui.Invoker;
 import de.futjikato.stroiz.ui.UiTask;
@@ -135,5 +136,13 @@ public class Manager {
         echoThread.stopLines();
         echoThread.interrupt();
         return true;
+    }
+
+    public Microphone getMicrophone() {
+        return new Microphone(currentTargetLine);
+    }
+
+    public Speaker createSpeaker(UdpReceiver receiver) {
+        return new Speaker(receiver, currentSourceLine);
     }
 }

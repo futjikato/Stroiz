@@ -26,10 +26,12 @@ public class ListTask extends PacketHandler<ListTask> {
                 TcpPacket response = packetHandler.createPacket(packet.getClient(), "SERVER_LIST_RES");
                 List<TcpClient> authedUsers = packetHandler.userManager.getUsers();
 
-                String[] parameter = new String[authedUsers.size()];
+                String[] parameter = new String[authedUsers.size() * 3];
                 int index = 0;
                 for(TcpClient client : authedUsers) {
                     parameter[index++] = client.getAddress().getHostAddress();
+                    parameter[index++] = client.getUsername();
+                    parameter[index++] = String.valueOf(client.getUdpPort());
                 }
 
                 response.setParameters(parameter);
@@ -44,8 +46,14 @@ public class ListTask extends PacketHandler<ListTask> {
             public void process(ListTask packetHandler, final TcpPacket packet) {
                 final String[] params = packet.getParameters();
                 StroizLogger.getLogger().info("Received member list");
-                for(String ip : params) {
-                    RemoteClient client = new RemoteClient(ip);
+                for(int i = 0 ; (i + 2) <= params.length ; i += 3) {
+                    String ip = params[i];
+                    String username = params[i+1];
+                    int udpPort = Integer.valueOf(params[i+2]);
+
+                    RemoteClient client = new RemoteClient(ip, udpPort);
+                    client.setUsername(username);
+
                     StroizLogger.getLogger().info("Received member.");
                     packetHandler.userManager.register(client);
                 }

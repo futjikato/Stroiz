@@ -2,7 +2,12 @@ package de.futjikato.stroiz.ui;
 
 import de.futjikato.stroiz.StroizLogger;
 import de.futjikato.stroiz.audio.Manager;
+import de.futjikato.stroiz.audio.Microphone;
+import de.futjikato.stroiz.audio.Speaker;
+import de.futjikato.stroiz.client.ClientUserManager;
+import de.futjikato.stroiz.client.RemoteClient;
 import de.futjikato.stroiz.client.ServerClient;
+import de.futjikato.stroiz.network.UdpReceiver;
 import de.futjikato.stroiz.ui.elements.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,6 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
 import java.io.IOException;
+import java.net.SocketException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -30,6 +36,9 @@ public class ListController implements Initializable {
 
     @FXML
     public TreeView<String> clientTree;
+
+    @FXML
+    public Button goBtn;
 
     private TreeItem<String> rootClientTreeItem;
 
@@ -120,8 +129,11 @@ public class ListController implements Initializable {
 
         if(manager.isReady()) {
             audioTestBtn.setDisable(false);
+            goBtn.setDisable(false);
+
         } else {
             audioTestBtn.setDisable(true);
+            goBtn.setDisable(true);
         }
     }
 
@@ -132,8 +144,10 @@ public class ListController implements Initializable {
 
         if(manager.isReady()) {
             audioTestBtn.setDisable(false);
+            goBtn.setDisable(false);
         } else {
             audioTestBtn.setDisable(true);
+            goBtn.setDisable(true);
         }
     }
 
@@ -156,5 +170,24 @@ public class ListController implements Initializable {
 
     public void setApplication(Starter application) {
         this.application = application;
+    }
+
+    public void onGo(ActionEvent actionEvent) {
+        ClientUserManager userManager = application.getClientUserManager();
+
+        Manager manager = application.getManager();
+        Microphone mic = manager.getMicrophone();
+        mic.addReceivers(userManager.getUsers());
+
+        try {
+            UdpReceiver receiver = new UdpReceiver(udpPortField.getInt(), 128);
+            Speaker speaker = manager.createSpeaker(receiver);
+            speaker.start();
+        } catch (SocketException e) {
+            e.printStackTrace();
+        } catch (ValidationException e) {
+            e.printStackTrace();
+        }
+
     }
 }

@@ -8,9 +8,9 @@
 
 <?import de.futjikato.stroiz.ui.elements.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="450.0" minWidth="600.0" prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.futjikato.stroiz.ui.ListController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="500.0" minWidth="600.0" prefHeight="470.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.futjikato.stroiz.ui.ListController">
    <children>
-      <HBox layoutX="10.0" layoutY="10.0" prefHeight="410.0" prefWidth="580.0">
+      <HBox layoutX="10.0" layoutY="10.0" prefHeight="460.0" prefWidth="580.0">
          <children>
             <VBox prefHeight="379.0" prefWidth="173.0">
                <children>
@@ -92,12 +92,17 @@
                         <Insets top="10.0" />
                      </VBox.margin>
                   </Button>
+                  <Button fx:id="goBtn" disable="true" mnemonicParsing="false" onAction="#onGo" text="Go">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Button>
                </children>
             </VBox>
             <TreeView fx:id="clientTree" nodeOrientation="LEFT_TO_RIGHT" prefHeight="379.0" prefWidth="407.0" />
          </children>
       </HBox>
-      <AnchorPane layoutX="4.0" layoutY="420.0" prefHeight="20" prefWidth="580">
+      <AnchorPane layoutX="4.0" layoutY="470.0" prefHeight="20" prefWidth="580">
          <children>
             <Label fx:id="statusBarLabel" layoutX="4.0" layoutY="1.0" prefHeight="20" prefWidth="580" styleClass="statusBar">
                <padding>

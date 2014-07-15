@@ -1,20 +1,36 @@
 package de.futjikato.stroiz.client;
 
-/**
- * Created by moritz on 10.07.14.
- */
+import de.futjikato.stroiz.network.UdpSender;
+
 public class RemoteClient {
 
-    private String listName;
+    private String techName;
 
     private String ip;
 
-    public RemoteClient(String ip) {
+    private int port;
+
+    private String username;
+
+    public RemoteClient(String ip, int port) {
         this.ip = ip;
-        this.listName = String.format("Client %s", ip);
+        this.port = port;
+        this.techName = String.format("Client %s", ip);
     }
 
     public String getListName() {
-        return listName;
+        if(username != null) {
+            return username;
+        }
+
+        return techName;
+    }
+
+    public UdpSender createUdpSender() {
+        return new UdpSender(ip, port);
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
