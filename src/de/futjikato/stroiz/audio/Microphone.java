@@ -7,13 +7,14 @@ import de.futjikato.stroiz.network.UdpSender;
 import javax.sound.sampled.TargetDataLine;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 
 public class Microphone extends Thread{
 
     private static final int BUFF_SIZE = 128;
 
-    private List<UdpSender> senders;
+    private List<UdpSender> senders = new CopyOnWriteArrayList<UdpSender>();
 
     private TargetDataLine dataLine;
 

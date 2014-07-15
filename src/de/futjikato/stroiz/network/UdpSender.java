@@ -18,7 +18,7 @@ public class UdpSender {
         this.port = port;
 
         try {
-            this.address = InetAddress.getByAddress(ip.getBytes());
+            this.address = InetAddress.getByName(ip);
         } catch (UnknownHostException e) {
             StroizLogger.getLogger().log(Level.SEVERE, "Unable to create address from IP.", e);
         }
