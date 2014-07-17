@@ -45,6 +45,7 @@ public class Microphone extends Thread{
     }
 
     public void addReceivers(List<RemoteClient> users) {
+        StroizLogger.getLogger().info(String.format("Create microphone for %d receivers", senders.size()));
         for(RemoteClient client : users) {
             senders.add(client.createUdpSender());
         }

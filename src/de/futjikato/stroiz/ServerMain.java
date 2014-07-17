@@ -1,7 +1,6 @@
 package de.futjikato.stroiz;
 
 import de.futjikato.stroiz.server.Server;
-import de.futjikato.stroiz.server.ServerUserManager;
 
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
@@ -11,22 +10,24 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author moritzspindelhirn
- * @todo Documentation
- * @category de.futjikato.stroiz
+ * Server Main class
  */
 public class ServerMain {
 
+    /**
+     * Main method
+     * Startup TCP server
+     *
+     * @param args
+     * @throws IOException
+     */
     public static void main(String[] args) throws IOException {
         // init logger
         StroizLogger.init("server.log");
 
         int port = Integer.valueOf(args[0]);
 
-        ServerUserManager serverUserManager = new ServerUserManager();
-
         Server server = new Server();
-        server.setUsermanager(serverUserManager);
         server.listen(port);
 
         ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();

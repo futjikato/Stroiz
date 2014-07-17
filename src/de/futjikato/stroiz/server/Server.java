@@ -1,44 +1,60 @@
 package de.futjikato.stroiz.server;
 
 import de.futjikato.stroiz.network.TcpClient;
+import de.futjikato.stroiz.network.TcpPacket;
 import de.futjikato.stroiz.network.TcpServer;
+import de.futjikato.stroiz.server.tasks.ServerUserList;
+import de.futjikato.stroiz.task.PacketHandler;
 import de.futjikato.stroiz.task.tasks.ClientAuthTask;
 import de.futjikato.stroiz.task.tasks.ListTask;
 import de.futjikato.stroiz.task.PacketProcessor;
 
+/**
+ * Server implementation
+ * Handles the new client by simply registering it with the UserManager.
+ */
 public class Server extends TcpServer {
 
-    private ServerUserManager usermanager;
-
+    /**
+     * Client authentication task
+     */
     private ClientAuthTask authTask;
 
-    private ListTask listTask;
+    /**
+     * Client listing task
+     */
+    private ServerUserList userList;
 
-    public void setUsermanager(ServerUserManager usermanager) {
-        this.usermanager = usermanager;
-    }
-
+    /**
+     * Handle a new client connection
+     *
+     * @param client
+     */
     @Override
     protected void newClient(TcpClient client) {
-        usermanager.register(client);
+        // todo may not needed ?
     }
 
-
-
+    /**
+     * Hook called before the server blocks to listen for new TCP connections.
+     */
     @Override
     protected void preListen() {
         // add tcp server packet processors
         authTask = new ClientAuthTask();
-        listTask = new ListTask(usermanager);
+        userList = new ServerUserList();
 
-        PacketProcessor.getInstance().addObserver(listTask);
+        PacketProcessor.getInstance().addObserver(userList);
         PacketProcessor.getInstance().addObserver(authTask);
     }
 
+    /**
+     * Hook called after the server stops listening and right before the thread ends.
+     */
     @Override
     protected void preEnd() {
         // remove tcp server packet processors
         PacketProcessor.getInstance().deleteObserver(authTask);
-        PacketProcessor.getInstance().deleteObserver(listTask);
+        PacketProcessor.getInstance().deleteObserver(userList);
     }
 }

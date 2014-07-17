@@ -164,6 +164,17 @@ public class TcpPacket {
             return;
         }
 
+        if(action == null) {
+            StroizLogger.getLogger().severe("Unable to send packet without action name");
+            return;
+        }
+
+        // if no parameter array was set just use an empty one
+        if(parameters == null) {
+            parameters = new String[0];
+        }
+
+        StroizLogger.getLogger().finer(String.format("Send %s with %d parameters", action, parameters.length));
         client.queueWrite(this);
     }
 }

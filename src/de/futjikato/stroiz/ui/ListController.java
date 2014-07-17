@@ -93,6 +93,8 @@ public class ListController implements Initializable {
                 selfClient.start();
 
                 selfClient.queryAuth(fieldUsername.getText(), udpPortField.getInt());
+
+                application.getClientUserManager().setSelf(selfClient);
             } catch (IOException e) {
                 StroizLogger.getLogger().log(Level.WARNING, "Connection error", e);
                 authError("Unable to connect to server.");
@@ -177,7 +179,7 @@ public class ListController implements Initializable {
 
         Manager manager = application.getManager();
         Microphone mic = manager.getMicrophone();
-        mic.addReceivers(userManager.getUsers());
+        mic.addReceivers(userManager.getUsersWithoutSelf());
         mic.start();
 
         try {
