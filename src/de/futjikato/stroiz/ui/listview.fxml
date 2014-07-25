@@ -6,72 +6,26 @@
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 
-<?import de.futjikato.stroiz.ui.elements.*?>
-
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="500.0" minWidth="600.0" prefHeight="470.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.futjikato.stroiz.ui.ListController">
    <children>
       <HBox layoutX="10.0" layoutY="10.0" prefHeight="460.0" prefWidth="580.0">
          <children>
             <VBox prefHeight="379.0" prefWidth="173.0">
                <children>
-                  <Label text="Host">
-                     <VBox.margin>
+                  <Label text="Servers" />
+                  <ListView fx:id="serverList" prefHeight="220.0" prefWidth="163.0">
+                     <opaqueInsets>
                         <Insets />
-                     </VBox.margin>
-                  </Label>
-                  <HostField fx:id="fieldHost">
+                     </opaqueInsets>
                      <VBox.margin>
                         <Insets right="10.0" />
                      </VBox.margin>
-                  </HostField>
-                  <Label text="Port">
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin>
-                  </Label>
-                  <PortField fx:id="fieldPort" text="8078" socketType="2" networkInterfaceType="1">
-                     <VBox.margin>
-                        <Insets right="10.0" />
-                     </VBox.margin>
-                  </PortField>
-                  <Label text="Username">
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin>
-                  </Label>
-                  <UsernameField fx:id="fieldUsername">
-                     <VBox.margin>
-                        <Insets right="10.0" />
-                     </VBox.margin></UsernameField>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                     <children>
-                        <Label text="UDP Port" />
-                        <Label layoutX="65.0" layoutY="4.0" text="Needs to be accessable">
-                           <font>
-                              <Font size="8.0" />
-                           </font></Label>
-                     </children>
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin>
-                  </AnchorPane>
-                  <PortField fx:id="udpPortField" networkInterfaceType="2" socketType="1" text="10087">
-                     <VBox.margin>
-                        <Insets right="10.0" />
-                     </VBox.margin>
-                  </PortField>
+                  </ListView>
                   <Button fx:id="btnConnect" mnemonicParsing="false" onAction="#onConnect" prefHeight="25.0" prefWidth="Infinity" text="Connect">
                      <VBox.margin>
                         <Insets right="10.0" top="10.0" />
                      </VBox.margin>
                   </Button>
-                  <AnchorPane prefHeight="77.0" prefWidth="173.0">
-                     <children>
-                        <Label fx:id="serverHeadline" text="Connected to:" visible="false" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="10.0" />
-                        <Label fx:id="serverLabel" prefHeight="15.0" prefWidth="21.0" visible="false" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="40.0" />
-                        <Label fx:id="serverErrorLabel" textFill="RED" visible="false" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="10.0" />
-                     </children>
-                  </AnchorPane>
                   <Label text="Audio Source" />
                   <ComboBox fx:id="mixerInSelect" onAction="#onMixerInSelect" prefWidth="Infinity" promptText="Select one">
                      <VBox.margin>

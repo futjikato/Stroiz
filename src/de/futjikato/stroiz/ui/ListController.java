@@ -4,11 +4,8 @@ import de.futjikato.stroiz.StroizLogger;
 import de.futjikato.stroiz.audio.Manager;
 import de.futjikato.stroiz.audio.Microphone;
 import de.futjikato.stroiz.audio.Speaker;
-import de.futjikato.stroiz.client.ClientUserManager;
-import de.futjikato.stroiz.client.RemoteClient;
 import de.futjikato.stroiz.client.ServerClient;
 import de.futjikato.stroiz.network.UdpReceiver;
-import de.futjikato.stroiz.ui.elements.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -23,15 +20,6 @@ import java.util.logging.Level;
 public class ListController implements Initializable {
 
     @FXML
-    public HostField fieldHost;
-
-    @FXML
-    public PortField fieldPort;
-
-    @FXML
-    public UsernameField fieldUsername;
-
-    @FXML
     public Button btnConnect;
 
     @FXML
@@ -40,16 +28,10 @@ public class ListController implements Initializable {
     @FXML
     public Button goBtn;
 
+    @FXML
+    public ListView serverList;
+
     private TreeItem<String> rootClientTreeItem;
-
-    @FXML
-    public Label serverLabel;
-
-    @FXML
-    public Label serverHeadline;
-
-    @FXML
-    public Label serverErrorLabel;
 
     @FXML
     public ComboBox mixerInSelect;
@@ -61,12 +43,6 @@ public class ListController implements Initializable {
 
     @FXML
     public Button audioTestBtn;
-
-    @FXML
-    public Label statusBarLabel;
-
-    @FXML
-    public PortField udpPortField;
 
     private ServerClient selfClient;
 
@@ -81,7 +57,7 @@ public class ListController implements Initializable {
     @FXML
     public void onConnect(ActionEvent actionEvent) {
 
-        boolean err = !fieldUsername.validate();
+/*        boolean err = !fieldUsername.validate();
         err = err|!fieldHost.validate();
         err = err|!fieldPort.validate();
         err = err|!udpPortField.validate();
@@ -92,32 +68,30 @@ public class ListController implements Initializable {
                 selfClient = new ServerClient(fieldHost.getText(), fieldPort.getInt());
                 selfClient.start();
 
-                selfClient.queryAuth(fieldUsername.getText(), udpPortField.getInt());
-
                 application.getClientUserManager().setSelf(selfClient);
+
+                selfClient.queryAuth(fieldUsername.getText(), udpPortField.getInt());
             } catch (IOException e) {
                 StroizLogger.getLogger().log(Level.WARNING, "Connection error", e);
                 authError("Unable to connect to server.");
-            } catch (ValidationException e) {
-                authError("Validation failed.");
             }
-        }
+        }*/
     }
 
     public void authSucc(String server) {
-        serverErrorLabel.setVisible(false);
+        /*serverErrorLabel.setVisible(false);
         serverLabel.setText(server);
         serverLabel.setVisible(true);
         serverHeadline.setVisible(true);
 
-        selfClient.queryMemberList();
+        selfClient.queryMemberList();*/
     }
 
     public void authError(String message) {
-        serverLabel.setVisible(false);
+        /*serverLabel.setVisible(false);
         serverHeadline.setVisible(false);
         serverErrorLabel.setText(message);
-        serverErrorLabel.setVisible(true);
+        serverErrorLabel.setVisible(true);*/
     }
 
     public TreeItem<String> getMemberListRoot() {
@@ -175,11 +149,10 @@ public class ListController implements Initializable {
     }
 
     public void onGo(ActionEvent actionEvent) {
-        ClientUserManager userManager = application.getClientUserManager();
 
-        Manager manager = application.getManager();
+       /* Manager manager = application.getManager();
         Microphone mic = manager.getMicrophone();
-        mic.addReceivers(userManager.getUsersWithoutSelf());
+        mic.addReceivers(application.getClientUserManager().getUserList());
         mic.start();
 
         try {
@@ -188,9 +161,6 @@ public class ListController implements Initializable {
             speaker.start();
         } catch (SocketException e) {
             e.printStackTrace();
-        } catch (ValidationException e) {
-            e.printStackTrace();
-        }
-
+        }*/
     }
 }

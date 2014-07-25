@@ -1,23 +1,27 @@
 package de.futjikato.stroiz.ui;
 
+import de.futjikato.stroiz.StroizLogger;
 import de.futjikato.stroiz.audio.Manager;
-import de.futjikato.stroiz.client.ClientUserManager;
-import de.futjikato.stroiz.client.RemoteClient;
-import de.futjikato.stroiz.task.tasks.ClientAuthTask;
+import de.futjikato.stroiz.client.tasks.ClientUserList;
 import de.futjikato.stroiz.task.PacketProcessor;
-import de.futjikato.stroiz.task.tasks.ListTask;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.TreeItem;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+
+import java.io.IOException;
+import java.util.logging.Level;
 
 public class Starter extends Application {
 
     private ListController listController;
-
-    private static ClientUserManager clientUserManager;
 
     private Manager recorder;
 
@@ -30,6 +34,7 @@ public class Starter extends Application {
 
         Scene scene = new Scene(root, root.minWidth(1), root.minHeight(1));
         scene.getStylesheets().add(Starter.class.getResource("listview.css").toExternalForm());
+        ((Pane)scene.getRoot()).getChildren().add(getSystemMenu());
 
         primaryStage.setTitle("Stroiz");
         primaryStage.setScene(scene);
@@ -43,32 +48,50 @@ public class Starter extends Application {
     }
 
     public static void doLaunch() {
-        clientUserManager = new ClientUserManager();
-
-        PacketProcessor.getInstance().addObserver(new ClientAuthTask());
-        PacketProcessor.getInstance().addObserver(new ListTask(clientUserManager));
+        ClientUserList clientUserManager = new ClientUserList();
+        PacketProcessor.getInstance().addObserver(clientUserManager);
 
         launch();
+    }
+
+    private MenuBar getSystemMenu() {
+        MenuBar menuBar = new MenuBar();
+        menuBar.setUseSystemMenuBar(true);
+
+        // Stroiz main menu
+        Menu mainMenu = new Menu("Stroiz");
+        MenuItem soundPrefMenuItem = new MenuItem("Sound preferences");
+        soundPrefMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Starter.this.openSoundPreference();
+            }
+        });
+        mainMenu.getItems().add(soundPrefMenuItem);
+        menuBar.getMenus().add(mainMenu);
+
+        return menuBar;
+    }
+
+    public void openSoundPreference() {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            Parent root = loader.load(getClass().getResource("soundPref.fxml").openStream());
+            SoundPreferenceController soundPrefController = loader.getController();
+            soundPrefController.setApplication(this);
+
+            Scene scene = new Scene(root, root.minWidth(1), root.minHeight(1));
+            scene.getStylesheets().add(Starter.class.getResource("soundPref.css").toExternalForm());
+        } catch (IOException e) {
+            StroizLogger.getLogger().log(Level.SEVERE, "Unable to open sound preference window.", e);
+        }
     }
 
     public ListController getController() {
         return listController;
     }
 
-    public void updateUsers() {
-        TreeItem<String> root = listController.getMemberListRoot();
-        root.getChildren().clear();
-
-        for(RemoteClient client : clientUserManager.getUsers()) {
-            root.getChildren().add(new TreeItem<String>(client.getListName()));
-        }
-    }
-
     protected Manager getManager() {
         return recorder;
-    }
-
-    public ClientUserManager getClientUserManager() {
-        return Starter.clientUserManager;
     }
 }

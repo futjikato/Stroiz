@@ -36,8 +36,8 @@ public final class ServerUserList extends PacketHandler<ServerUserList> {
                     client.setUdpPort(udpReceivePort);
                     client.setAuthenticated(true);
 
-                    packetHandler.distributeClient(client);
                     packetHandler.clientList.add(client);
+                    packetHandler.distributeClient(client);
 
                     TcpPacket response = packetHandler.createPacket(request.getClient(), "CLIENT_USER_AUTH_OK", "Unable to fetch username");
                     StroizLogger.getLogger().info(String.format("New client authenticated with username: %s", username));

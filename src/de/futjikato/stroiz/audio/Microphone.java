@@ -1,7 +1,6 @@
 package de.futjikato.stroiz.audio;
 
 import de.futjikato.stroiz.StroizLogger;
-import de.futjikato.stroiz.client.RemoteClient;
 import de.futjikato.stroiz.network.UdpSender;
 
 import javax.sound.sampled.TargetDataLine;
@@ -44,10 +43,10 @@ public class Microphone extends Thread{
         dataLine.flush();
     }
 
-    public void addReceivers(List<RemoteClient> users) {
+    public void addReceivers(List<UdpSender> users) {
         StroizLogger.getLogger().info(String.format("Create microphone for %d receivers", senders.size()));
-        for(RemoteClient client : users) {
-            senders.add(client.createUdpSender());
+        for(UdpSender client : users) {
+            senders.add(client);
         }
     }
 }

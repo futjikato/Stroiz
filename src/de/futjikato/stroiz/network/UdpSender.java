@@ -14,6 +14,8 @@ public class UdpSender {
 
     private int port;
 
+    private String username;
+
     public UdpSender(String ip, int port) {
         this.port = port;
 
@@ -38,5 +40,13 @@ public class UdpSender {
 
         DatagramPacket packet = new DatagramPacket(buff, buff.length, address, port);
         ds.send(packet);
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getUsername() {
+        return username;
     }
 }
